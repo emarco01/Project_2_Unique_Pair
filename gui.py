@@ -1,5 +1,7 @@
 from tkinter import *
 import csv
+from random import *
+
 
 members_list = []
 
@@ -113,14 +115,37 @@ class GUI:
 
         try:
             with open('Groups.csv', 'r+', newline='') as csvfile:
-                content = csv.reader(csvfile)
+                content_reader = csv.reader(csvfile)
+                content_writer = csv.writer(csvfile)
                 members_file_content = []
                 groups = []
 
                 with open(file_name, 'r') as members_file:
                     for line in members_file:
                         members_file_content.append(line)
-        except FileNotFoundError:
 
+                for member in members_file_content:
+                    other = members_file_content[randint(0, len(members_file_content) - 1)]
+                    group = []
+                    group.append(member)
+                    group.append(other)
+                    content_writer.writerow(group)
+
+        except FileNotFoundError:
+            with open('Groups.csv', 'a', newline='') as csvfile:
+                content_writer = csv.writer(csvfile)
+                members_file_content = []
+                groups = []
+
+                with open(file_name, 'r') as members_file:
+                    for line in members_file:
+                        members_file_content.append(line)
+
+                for member in members_file_content:
+                    other = members_file_content[randint(0, len(members_file_content) - 1)]
+                    group = set()
+                    group.add(member)
+                    group.add(other)
+                    content_writer.writerow(group)
 
         print('clicked')
